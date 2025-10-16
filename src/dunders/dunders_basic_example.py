@@ -25,6 +25,23 @@ class MyString:
         """make a shallow copy."""
         return MyString(self.string.decode('utf-8'))
 
+    def __mul__(self, other):
+        """Repeat string n times."""
+        if isinstance(other, int):
+            return MyString(self.string.decode("utf-8") * other)
+        raise TypeError("Multiplication only supported with int")
+
+    def __truediv__(self, other):
+        """Divide string into n parts and return first part."""
+        if isinstance(other, int) and other > 0:
+            decoded = self.string.decode("utf-8")
+            part_len = len(decoded) // other
+            return MyString(decoded[:part_len])
+        raise ValueError("Division requires positive integer")
+
+    def __len__(self):
+        """Length of string."""
+        return len(self.string.decode("utf-8"))
 
 if __name__ == '__main__':
     my_string = MyString('hello')
@@ -34,4 +51,7 @@ if __name__ == '__main__':
     print(my_new_string - my_string)
     my_last_string = my_string.copy()
     print(my_string is my_last_string)
-
+    print(my_string * 3)
+    print(my_new_string / 2)
+    print(len(my_string))
+    print(len(""))
