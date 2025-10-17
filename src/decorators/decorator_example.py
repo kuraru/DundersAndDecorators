@@ -1,27 +1,26 @@
-def my_decorator(f):
-    def wrapper():
-        print("Before function")
-        f()
-        print("After function")
-    return wrapper
+def my_decorator_n(n: int):
+    """A decorator that prints messages before and after a function n times."""
+    if not isinstance(n, int):
+        raise TypeError("n must be an integer")
+    if n < 0:
+        raise ValueError("n must be >= 0")
+
+    def decorator(f):
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                print("Before function")
+            result = f(*args, **kwargs)
+            for _ in range(n):
+                print("After function")
+            return result
+        return wrapper
+    return decorator
 
 
-@my_decorator
-def execute_task():
-    print("Executing task…")
-
-
-def do_twice(f):
-    def wrapper_do_twice(*args, **kwargs):
-        f(*args, **kwargs)
-        f(*args, **kwargs)
-    return wrapper_do_twice
-
-
-@do_twice
-def count_to(n):
-    message = "".join([i for i in range(1, n+1)])
+@my_decorator_n(2)
+def execute_task(t):
+    print(f"executing task: {t}")
 
 
 if __name__ == "__main__":
-    execute_task()
+    execute_task("Sample Task")
